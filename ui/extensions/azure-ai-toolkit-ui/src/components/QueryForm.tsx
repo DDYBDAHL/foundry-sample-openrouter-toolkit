@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { SlTextarea, SlSelect, SlOption, SlButton, SlCheckbox, SlIcon, SlTooltip, SlDetails } from '@shoelace-style/shoelace/dist/react';
-import { MODEL_GROUPS, TEMPERATURE_OPTIONS, PROVIDER_SORT_OPTIONS } from '../utils/constants';
+import { TEMPERATURE_OPTIONS, PROVIDER_SORT_OPTIONS } from '../utils/constants';
 
 interface ContextOption {
   value: string;
@@ -119,12 +119,6 @@ const QueryForm = React.memo(({
     // Update React state after resize
     setQuery(newValue);
   };
-
-  const handleModelChange = (e: CustomEvent) => {
-    const target = e.target as HTMLSelectElement;
-    const newModel = target.value;
-    setModelName(newModel);
-  };
   
   const handleTemperatureChange = (e: CustomEvent) => {
     const target = e.target as HTMLSelectElement;
@@ -236,29 +230,16 @@ const QueryForm = React.memo(({
         </SlTextarea>
       </div>
 
-      <div className="flex flex-col gap-3 relative z-20 mt-2">
-        <SlSelect
-          label="Model"
-          value={modelName}
-          onSlChange={handleModelChange}
-        >
-          <SlIcon slot="prefix" name="cpu" />
-          
-          {(Object.entries(MODEL_GROUPS) as [string, string[]][]).map(([groupName, models]: [string, string[]]) => (
-            <React.Fragment key={groupName}>
-              <SlOption value="" disabled>{groupName}</SlOption>
-              {models.map((m: string) => (
-                <SlOption key={m} value={m}>
-                  {m}
-                </SlOption>
-              ))}
-            </React.Fragment>
-          ))}
-        </SlSelect>
-
+      {/* Model display - shows hardcoded GPT-5 (removed selector) */}
+      <div className="bg-neutral-50 border border-neutral-200 rounded-md p-3 flex items-center gap-2">
+        <SlIcon name="cpu" />
+        <div>
+          <div className="text-sm font-medium text-neutral-700">Model</div>
+          <div className="text-sm text-neutral-600">{modelName}</div>
+        </div>
       </div>
 
-      {/* Online Search - Now positioned after model selection */}
+      {/* Online Search - Now positioned after model display */}
       <div className="flex items-center gap-2 mt-2">
         <SlIcon name="search" />
         <SlTooltip content="Search the web for current information. May result in longer response times.">
